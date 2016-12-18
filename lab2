@@ -1,0 +1,109 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <locale.h>
+
+void inputArr(int Arr[], int &N)
+{
+	scanf_s("%d", &Arr[0]);
+	for (int i = 1; i < N; i++)
+	{
+		scanf_s("%d", &Arr[i]);
+
+		if (Arr[i] <= Arr[i - 1])
+		{
+			do
+			{
+				printf("Следущее значение должно быть больше предыдущего (%d).\n", Arr[i - 1]);
+				scanf_s("%d", &Arr[i]);
+			} 
+			while (Arr[i] <= Arr[i - 1]);
+		}
+	}
+}
+
+void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m)
+{
+	int i1 = 0;
+	int i2 = 0;
+
+	for (int i = 0; i < n + m; i++)
+	{
+		if (i1 >= n || i2 >= m)
+		{
+			while (i1 < n && i2 >= m)
+			{
+				Arr3[i] = Arr1[i1];
+				i1++, i++;
+			}
+
+			while (i2 < m && i1 >= n)
+			{
+				Arr3[i] = Arr2[i2];
+				i2++, i++;
+			}
+		}
+		else
+		{
+			if (Arr1[i1] == Arr2[i2])
+			{
+				Arr3[i] = Arr1[i1];
+				Arr3[++i] = Arr2[i2];
+				i1++, i2++;
+			}
+			else
+			{
+				if (Arr1[i1] < Arr2[i2])
+				{
+					Arr3[i] = Arr1[i1];
+					i1++;
+				}
+				else
+				{
+					Arr3[i] = Arr2[i2];
+					i2++;
+				}
+			}
+		}
+	}
+}
+
+void outputArrays(int Arr[], int &N)
+{
+	for (int i = 0; i < N; i++)
+	{
+		printf("%d ", Arr[i]);
+	}
+}
+	
+void main()
+{
+	setlocale(LC_ALL, "RUS");
+
+	const int n = 5;
+	const int m = 3;
+	int N;
+
+	int Arr;
+	int Arr1[n];
+	int Arr2[m];
+	int Arr3[n + m];
+
+	printf("Введите значения для первого массива.\n");
+	inputArr(Arr1, N = n);
+
+	printf("Введите значения для второго массива.\n");
+	inputArr(Arr2, N = m);
+
+	integration(Arr1, Arr2, Arr3, n, m);
+
+	printf("\nЗначения первого массива:\n");
+	outputArrays(Arr1, N = n);
+
+	printf("\n\nЗначения второго массива:\n");
+	outputArrays(Arr2, N = m);
+
+	printf("\n\nЗначения суммарного массива:\n");
+	outputArrays(Arr3, N = n + m);
+	
+	system("pause");
+}
