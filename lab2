@@ -8,7 +8,6 @@ void inputArr(int Arr[], int &N)
 	for (int i = 1; i < N; i++)
 	{
 		scanf_s("%d", &Arr[i]);
-
 		if (Arr[i] <= Arr[i - 1])
 		{
 			do
@@ -35,7 +34,6 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m)
 				Arr3[i] = Arr1[i1];
 				i1++, i++;
 			}
-
 			while (i2 < m && i1 >= n)
 			{
 				Arr3[i] = Arr2[i2];
