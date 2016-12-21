@@ -25,46 +25,56 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m)
 	int i1 = 0;
 	int i2 = 0;
 	int i = 0;
-
-	do
+	
+	while (i1 < n && i2 < m )
 	{
-		if (i1 >= n || i2 >= m)
+		if (Arr1[i1] == Arr2[i2])
 		{
-			while (i1 < n && i2 >= m)
+			Arr3[i] = Arr1[i1];
+			Arr3[++i] = Arr2[i2];
+			i1++, i2++, i++;
+		}
+		else
+		{
+			if (Arr1[i1] < Arr2[i2])
 			{
 				Arr3[i] = Arr1[i1];
 				i1++, i++;
 			}
-			while (i2 < m && i1 >= n)
+			else
 			{
 				Arr3[i] = Arr2[i2];
 				i2++, i++;
 			}
 		}
-		else
+	}
+	
+	while (i1 >= n && i < m + n) 
+	{
+		if (i2 < m && i1 >= n)
 		{
-			if (Arr1[i1] == Arr2[i2])
-			{
-				Arr3[i] = Arr1[i1];
-				Arr3[++i] = Arr2[i2];
-				i1++, i2++, i++;
-			}
-			else
-			{
-				if (Arr1[i1] < Arr2[i2])
-				{
-					Arr3[i] = Arr1[i1];
-					i1++, i++;
-				}
-				else
-				{
-					Arr3[i] = Arr2[i2];
-					i2++, i++;
-				}
-			}
+			Arr3[i] = Arr2[i2];
+			i2++, i++;
+		}
+		if (i2 >= m)
+		{
+			Arr3[i] = Arr1[i1];
+			i1++, i++;
+		}
+		
+	while (i2 >= m && i < m + n)
+	{	
+		if (i1 < n && i2 >= m)
+		{
+			Arr3[i] = Arr1[i1];
+			i1++, i++;
+		}
+		if ( i1 >= n)
+		{
+			Arr3[i] = Arr2[i2];
+			i2++, i++;
 		}
 	}
-	while (i<n+m);
 }
 
 void outputArrays(int Arr[], int &N)
