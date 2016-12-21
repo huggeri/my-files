@@ -1,0 +1,10 @@
+
+void main()
+{
+int value;
+
+printf("Введите значение:\n");
+scanf_s("%d", value);
+
+
+}
