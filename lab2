@@ -61,6 +61,7 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m)
 			Arr3[i] = Arr1[i1];
 			i1++, i++;
 		}
+	}
 		
 	while (i2 >= m && i < m + n)
 	{	
