@@ -2,119 +2,129 @@
 #include <stdlib.h> 
 #include <locale.h>
 
-void inputArr(int Arr[], int &N)
+void inputArr(int Arr[], int &N) //функция ввода
 {
-	scanf_s("%d", &Arr[0]);
+	scanf_s("%d", &Arr[0]); //ввод массива
 	for (int i = 1; i < N; i++)
 	{
 		scanf_s("%d", &Arr[i]);
-		if (Arr[i] <= Arr[i - 1])
+		if (Arr[i] < Arr[i - 1])
 		{
 			do
 			{
-				printf("Следущее значение должно быть больше предыдущего (%d).\n", Arr[i - 1]);
+				printf("Следущее значение должно быть больше предыдущего (%d).\n", Arr[i - 1]); //в массиве значения должны быть упорядочены по возрастанию
 				scanf_s("%d", &Arr[i]);
-			} 
-			while (Arr[i] <= Arr[i - 1]);
+			} while (Arr[i] < Arr[i - 1]);
 		}
 	}
 }
 
-void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m)
+void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m) //функция слияния
 {
-	int i1 = 0;
-	int i2 = 0;
 	int i = 0;
-	
-	while (i1 < n && i2 < m )
+	int j = 0;
+
+	while (i < n && j < m)
 	{
-		if (Arr1[i1] == Arr2[i2])
+		//if (Arr1[i1] == Arr2[i2]) //если итые значения идентичны
+		//{
+		//	Arr3[i] = Arr1[i1];
+		//	Arr3[++i] = Arr2[i2];
+		//	i1++, i2++, i++;
+		//}
+		//else //если итые значения не идентичны
+		//{
+		if (Arr1[i] < Arr2[j]) //если итое значение Arr1 меньше итого значения Arr2
 		{
-			Arr3[i] = Arr1[i1];
-			Arr3[++i] = Arr2[i2];
-			i1++, i2++, i++;
+			Arr3[i+j] = Arr1[i];
+			i++;
 		}
-		else
+		else //если итое значение Arr2 меньше итого значения Arr1
 		{
-			if (Arr1[i1] < Arr2[i2])
-			{
-				Arr3[i] = Arr1[i1];
-				i1++, i++;
-			}
-			else
-			{
-				Arr3[i] = Arr2[i2];
-				i2++, i++;
-			}
+			Arr3[i+j] = Arr2[j];
+			j++;
 		}
+		/*}*/
 	}
-	
-	while (i1 >= n && i < m + n) 
+
+	while (i < n)
 	{
-		if (i2 < m && i1 >= n)
-		{
-			Arr3[i] = Arr2[i2];
-			i2++, i++;
-		}
-		if (i2 >= m)
-		{
-			Arr3[i] = Arr1[i1];
-			i1++, i++;
-		}
+		Arr3[i+j] = Arr1[i];
+		i++;
 	}
-		
-	while (i2 >= m && i < m + n)
-	{	
-		if (i1 < n && i2 >= m)
-		{
-			Arr3[i] = Arr1[i1];
-			i1++, i++;
-		}
-		if ( i1 >= n)
-		{
-			Arr3[i] = Arr2[i2];
-			i2++, i++;
-		}
-	}
-}
 
-void outputArrays(int Arr[], int &N)
-{
-	for (int i = 0; i < N; i++)
+	while (j < m)
 	{
-		printf("%d ", Arr[i]);
+		Arr3[i+j] = Arr2[j];
+		j++;
 	}
+	//while (i1 >= n && i < m + n) //если массив Arr1 закончился
+	//{
+	//	if (i2 < m && i1 >= n) //переписываем остатки массива Arr2
+	//	{
+	//		Arr3[i] = Arr2[i2];
+	//		i2++, i++;
+	//	}
+	//	if (i2 >= m) //переписываем остатки массива Arr1
+	//	{
+	//		Arr3[i] = Arr1[i1];
+	//		i1++, i++;
+	//	}
+	//}
+
+	//while (i2 >= m && i < m + n) //если массив Arr2 закончился
+	//{
+	//	if (i1 < n && i2 >= m) //переписываем остатки массива Arr1
+	//	{
+	//		Arr3[i] = Arr1[i1];
+	//		i1++, i++;
+	//	}
+	//	if (i1 >= n) //переписываем остатки массива Arr2
+	//	{
+	//		Arr3[i] = Arr2[i2];
+	//		i2++, i++;
+	//	}
+	//}
 }
 	
-void main()
-{
-	setlocale(LC_ALL, "RUS");
 
-	const int n = 5;
-	const int m = 3;
-	int N;
+	void outputArrays(int Arr[], int &N) //функция вывода массивов
+	{
+		for (int i = 0; i < N; i++)
+		{
+			printf("%d ", Arr[i]);
+		}
+	}
 
-	int Arr;
-	int Arr1[n];
-	int Arr2[m];
-	int Arr3[n + m];
+	void main()
+	{
+		setlocale(LC_ALL, "RUS");
 
-	printf("Введите значения для первого массива.\n");
-	inputArr(Arr1, N = n);
+		const int n = 3;
+		const int m = 5;
+		int N;
 
-	printf("Введите значения для второго массива.\n");
-	inputArr(Arr2, N = m);
+		int Arr;
+		int Arr1[n];
+		int Arr2[m];
+		int Arr3[n + m];
 
-	integration(Arr1, Arr2, Arr3, n, m);
+		printf("Введите значения для первого массива.\n");
+		inputArr(Arr1, N = n);
 
-	printf("\nЗначения первого массива:\n");
-	outputArrays(Arr1, N = n);
+		printf("Введите значения для второго массива.\n");
+		inputArr(Arr2, N = m);
 
-	printf("\n\nЗначения второго массива:\n");
-	outputArrays(Arr2, N = m);
+		integration(Arr1, Arr2, Arr3, n, m);
 
-	printf("\n\nЗначения суммарного массива:\n");
-	outputArrays(Arr3, N = n + m);
-	
-	system("pause");
-}
+		printf("\nЗначения первого массива:\n");
+		outputArrays(Arr1, N = n);
+
+		printf("\n\nЗначения второго массива:\n");
+		outputArrays(Arr2, N = m);
+
+		printf("\n\nЗначения суммарного массива:\n");
+		outputArrays(Arr3, N = n + m);
+
+		system("pause");
+	}
