@@ -12,7 +12,7 @@ void inputArr(int Arr[], int &N) //функция ввода
 		{
 			do
 			{
-				printf("Следущее значение должно быть больше предыдущего (%d).\n", Arr[i - 1]); //в массиве значения должны быть упорядочены по возрастанию
+				printf("Следущее значение должно быть не меньше предыдущего (%d).\n", Arr[i - 1]); //в массиве значения должны быть упорядочены по возрастанию
 				scanf_s("%d", &Arr[i]);
 			} while (Arr[i] < Arr[i - 1]);
 		}
@@ -26,14 +26,6 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m) /
 
 	while (i < n && j < m)
 	{
-		//if (Arr1[i1] == Arr2[i2]) //если итые значения идентичны
-		//{
-		//	Arr3[i] = Arr1[i1];
-		//	Arr3[++i] = Arr2[i2];
-		//	i1++, i2++, i++;
-		//}
-		//else //если итые значения не идентичны
-		//{
 		if (Arr1[i] < Arr2[j]) //если итое значение Arr1 меньше итого значения Arr2
 		{
 			Arr3[i+j] = Arr1[i];
@@ -44,7 +36,6 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m) /
 			Arr3[i+j] = Arr2[j];
 			j++;
 		}
-		/*}*/
 	}
 
 	while (i < n)
@@ -58,35 +49,7 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m) /
 		Arr3[i+j] = Arr2[j];
 		j++;
 	}
-	//while (i1 >= n && i < m + n) //если массив Arr1 закончился
-	//{
-	//	if (i2 < m && i1 >= n) //переписываем остатки массива Arr2
-	//	{
-	//		Arr3[i] = Arr2[i2];
-	//		i2++, i++;
-	//	}
-	//	if (i2 >= m) //переписываем остатки массива Arr1
-	//	{
-	//		Arr3[i] = Arr1[i1];
-	//		i1++, i++;
-	//	}
-	//}
-
-	//while (i2 >= m && i < m + n) //если массив Arr2 закончился
-	//{
-	//	if (i1 < n && i2 >= m) //переписываем остатки массива Arr1
-	//	{
-	//		Arr3[i] = Arr1[i1];
-	//		i1++, i++;
-	//	}
-	//	if (i1 >= n) //переписываем остатки массива Arr2
-	//	{
-	//		Arr3[i] = Arr2[i2];
-	//		i2++, i++;
-	//	}
-	//}
 }
-	
 
 	void outputArrays(int Arr[], int &N) //функция вывода массивов
 	{
