@@ -65,6 +65,7 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m) /
 
 		const int n = 3;
 		const int m = 5;
+		int N;
 		
 		int Arr1[n];
 		int Arr2[m];
