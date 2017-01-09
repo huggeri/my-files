@@ -2,7 +2,7 @@
 #include <stdlib.h> 
 #include <locale.h>
 
-void inputArr(int Arr[], int &N) //функция ввода
+void inputArr(int Arr[], int N) //функция ввода
 {
 	scanf_s("%d", &Arr[0]); //ввод массива
 	for (int i = 1; i < N; i++)
@@ -51,7 +51,7 @@ void integration(int Arr1[], int Arr2[], int Arr3[], const int n, const int m) /
 	}
 }
 
-	void outputArrays(int Arr[], int &N) //функция вывода массивов
+void outputArrays(int Arr[], int N) //функция вывода массивов
 	{
 		for (int i = 0; i < N; i++)
 		{
