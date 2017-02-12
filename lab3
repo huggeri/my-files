@@ -31,13 +31,36 @@ int findWorld(int num, char str[])
 		}
 		if (num == cnt) break;
 	}
-	if (str[j] == '\0' && ((str[j - 1] >= 'a' && str[j - 1] <= 'z') || (str[j - 1] >= 'A' && str[j - 1] <= 'Z') || (str[j - 1] >= '0' && str[j - 1] <= '9')) && str[j - 2] == ' ')
+	if (str[j] == '\0' && ((str[j - 1] >= 'a' && str[j - 1] <= 'z') || (str[j - 1] >= 'A' && str[j - 1] <= 'Z') || (str[j - 1] >= '0' && str[j - 1] <= '9')) && str[j - 2] == ' ' && num == cnt)
 		return j - 1;
 
 	if (str[j] == '\0')
 		return '.';
 
 	return j - 1;
+}
+
+int number(char str[], int n)
+{
+	int i = n;
+	int num = str[i] - '0';
+		for (i = n; str[i + 1] >= '0' && str[i + 1] <= '9'; i++)
+		{
+			num *= 10;
+			num += str[i + 1] - '0';
+		}
+	return num;
+}
+
+int length(char str[], int n)
+{
+	int i = n, len = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		len++;
+		i++;
+	}
+	return len-1;
 }
 
 void uncompress(char str[], char newStr[])
@@ -48,9 +71,13 @@ void uncompress(char str[], char newStr[])
 	{
 		if (str[n] >= '0' && str[n] <= '9')
 		{
-			num = str[n] - '0';
+			num = number(str, n);
 			j = findWorld(num, str);
 
+			if (num > 9)
+			{
+				n = n + length(str, n);
+			}
 			if (j == 1)
 				j = 0;
 
