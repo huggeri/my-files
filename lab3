@@ -1,0 +1,93 @@
+#include <stdio.h> 
+#include <locale.h> 
+#include <stdlib.h> 
+
+void input(char str[], const int n)
+{
+	printf("Введите строку:\n");
+	gets_s(str, n);
+}
+
+int findWorld(int num, char str[])
+{
+	int cnt = 0, j = 1;
+
+	if (num == 0)
+		return '.';
+
+	if (str[0] != ' ')
+		cnt++;
+
+	while (str[j] != '\0' && num != cnt)
+	{
+		if (((str[j] >= 'a' && str[j] <= 'z') || (str[j] >= 'A' && str[j] <= 'Z') || (str[j] >= '0' && str[j] <= '9')) && str[j - 1] == ' ')
+		{
+			j++;
+			cnt++;
+		}
+		else
+		{
+			j++;
+		}
+		if (num == cnt) break;
+	}
+	if (str[j] == '\0' && ((str[j - 1] >= 'a' && str[j - 1] <= 'z') || (str[j - 1] >= 'A' && str[j - 1] <= 'Z') || (str[j - 1] >= '0' && str[j - 1] <= '9')) && str[j - 2] == ' ')
+		return j - 1;
+
+	if (str[j] == '\0')
+		return '.';
+
+	return j - 1;
+}
+
+void uncompress(char str[], char newStr[])
+{
+	int j, i = 0, num;
+
+	for (int n = 0; str[n] != '\0'; n++)
+	{
+		if (str[n] >= '0' && str[n] <= '9')
+		{
+			num = str[n] - '0';
+			j = findWorld(num, str);
+
+			if (j == 1)
+				j = 0;
+
+			if (j == '.')
+			{
+				newStr[i] = j;
+				i++;
+			}
+			else
+			{
+				while (str[j] != ' ' && str[j] != '\0')
+				{
+					newStr[i] = str[j];
+					i++;
+					j++;
+				}
+			}
+		}
+		else
+		{
+			newStr[i] = str[n];
+			i++;
+		}
+	}
+	newStr[i] = '\0';
+}
+
+void main()
+{
+	setlocale(LC_ALL, "RUS");
+
+	const int n = 100, m = 1000;
+	char str[n], newStr[m];
+
+	input(str, n);
+	uncompress(str, newStr);
+	printf("\n");
+	puts(newStr);
+	system("pause");
+}
