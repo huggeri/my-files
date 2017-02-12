@@ -78,8 +78,6 @@ void uncompress(char str[], char newStr[])
 			{
 				n = n + length(str, n);
 			}
-			if (j == 1)
-				j = 0;
 
 			if (j == '.')
 			{
