@@ -1,0 +1,30 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <math.h> 
+
+double sqart(double x)
+{
+	double eps = 0.0001;
+	int k = 0;
+	double Sn = 1, S = 1, t;
+
+	do
+	{
+		t = x*(1 - 2 * k) / (2 * k + 2);
+		Sn *= t;
+		S += Sn;
+		k++;
+	} while (fabs(Sn) > eps);
+	return S;
+}
+
+void main()
+{
+	double x = 0.1, step = 0.1;
+	while (x < 1)
+	{
+		printf("x= %.6lf\t sqrt(x)= %.6lf;\t %.6lf\n", x, sqrt(1 + x), sqart(x));
+		x += step;
+	}
+	system("pause");
+}
