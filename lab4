@@ -6,7 +6,6 @@ void shake(int *A, int n)
 {
 	int a = 0, b = n - 1;
 	bool flag = true;
-	int c = 0;
 
 	while (a < b && flag == true)
 	{
@@ -15,14 +14,14 @@ void shake(int *A, int n)
 		{
 			if (A[i] > A[i + 1])
 			{
-				c = A[i];
+				int c = A[i];
 				A[i] = A[i + 1];
 				A[i + 1] = c;
 				flag = true;
 			}
 			if (A[j] < A[j - 1])
 			{
-				c = A[j];
+				int c = A[j];
 				A[j] = A[j - 1];
 				A[j - 1] = c;
 				flag = true;
