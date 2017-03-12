@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
+
+void inputStr(char *A, int n)
+{
+	printf("Enter string\n");
+	gets_s(A, n);
+}
+
+char* longestWord(char *A)//поиск длинного слова и возвращение адреса его начала
+{
+	int max = 0, len = 0;
+	char* b = A;
+	for (int i = 0; *(A + i) != '\0'; i++)
+	{
+		while (*(A + i) != '\0' && *(A + i) != ' ')
+			len++, i++;
+		if (len > max)
+		{
+			max = len;
+			b = A + i - len;
+		}
+		len = 0;
+		if (*(A + i) == '\0')
+			i--;
+	}
+	return b;
+}
+
+int countWords(char *A)
+{
+	int cnt = 0, i = 1;
+	if (*A != ' ')	
+		cnt++;
+	while (*(A + i) != '\0')
+	{
+		if (*(A + i) != ' ' && *(A + i - 1) == ' ')
+			cnt++;
+		i++;
+	}
+	return cnt;
+}
+
+void transfer(char *A, char *B)
+{
+	if (*A != '\0')
+	{
+		int i, len;
+		char* b = A;
+		if (countWords(A) > 0)
+		{
+			b = longestWord(A);
+			for (i = 0; *(b + i) != ' ' && *(b + i) != '\0'; i++)
+			{
+				*(B + i) = *(b + i);
+			}
+			len = i;
+			*(B + len) = ' ';
+
+			for (i = i - 1; i >= 0; i--)
+				*(b + i) = ' ';
+
+			transfer(A, B + len + 1);
+			
+		}
+	}
+}
+
+void output(char *A, char *B)
+{
+	*(B + strlen(A)) = '\0';
+	for (int i = 0; *(B + i) != '\0'; i++)
+	{
+		*(A + i) = *(B + i);
+	}
+	puts(A);
+}
+
+void main()
+{
+	int n = 100;
+	char* A = (char*)malloc(n * sizeof(char));
+	char* B = (char*)malloc(n * sizeof(char));
+
+	inputStr(A, n);
+	transfer(A, B);
+	output(A, B);
+
+	free(B);
+	free(A);
+
+	system("pause");
+}
