@@ -58,12 +58,9 @@ void transfer(char *A, char *B)
 			}
 			len = i;
 			*(B + len) = ' ';
-
 			for (i = i - 1; i >= 0; i--)
 				*(b + i) = ' ';
-
-			transfer(A, B + len + 1);
-			
+			transfer(A, B + len + 1);			
 		}
 	}
 }
