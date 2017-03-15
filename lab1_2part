@@ -43,7 +43,7 @@ int countWords(char *A) // функция для рассчёта количес
 		cnt++;
 	while (*(A + i) != '\0')
 	{
-		if (check && *(A + i - 1) == ' ')
+		if (check && (*(A + i - 1) <= 'A' || (*(A + i - 1) >= 'Z' && *(A + i - 1) <= 'a') || *(A + i - 1) >= 'z')
 			cnt++;
 		i++;
 	}
