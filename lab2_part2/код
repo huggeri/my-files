@@ -1,0 +1,477 @@
+//вариант 4: название экзамена, дата экзамена, фамилия преподавателя, 
+//количество оценок, оценки – перечень полей структурированнй переменной
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
+#include <locale.h>
+
+struct exam //переменная
+{
+	char name[40];
+	char teacherSername[15];
+	int dd, mm, yyyy, countMarks;
+	char marks[11];
+	bool filled = false;
+};
+//прототипы некоторых функций
+exam* getNewExam(exam* dataBase);//заполнение 1 записи
+void showOne(exam* dataBase, bool noteFounded, int index);//показать 1 запись
+bool compare(exam* a, exam* b, int cnt);//сравнение
+void enterIndex(exam *dataBase, int n, int &index);//ввод индекса для добавления, редактирования, удаления записи или её демонстрации
+void menues(int flag);//вывод меню
+void keyTable(exam *dataBase, int n);//таблицу ключей показать
+void addNew(exam* dataBase, int index);//добавление 1 записи
+int converting(char string[]);//преобразование в целочисленный тип
+
+void editing(exam* dataBase, int index)//редактирование записи
+{
+	int option = 0;
+	if (!(dataBase + index)->filled)//если не заполнена
+		showOne(dataBase + index, !(dataBase + index)->filled, index);//вывод информации об этом
+	else
+	{
+		printf("Пожалуйста, просмотрите найденную запись:\n");
+		showOne(dataBase + index, (dataBase + index)->filled, index);
+	}
+	menues(1);
+	scanf_s("%d", &option);
+	switch (option)
+	{
+	case 1:
+	{
+		printf("Введите название экзамена.\n");
+		gets_s((dataBase + index)->name);
+		fflush(stdin);
+		break;
+	}
+	case 2:
+	{
+		printf("Введите фамилию преподавателя.\n");
+		gets_s((dataBase + index)->teacherSername);
+		fflush(stdin);
+		break;
+	}
+	case 3:
+	{
+		printf("Введите дату экзамена в формате DD, нажмите Enter. Затем, введите месяц в виде MM, нажимите Enter. Введите год в формате YYYY.\n");
+		scanf_s("%d", &(dataBase + index)->dd);
+		scanf_s("%d", &(dataBase + index)->mm);
+		scanf_s("%d", &(dataBase + index)->yyyy);
+		break;
+	}
+	case 4: 
+	{		
+		printf("Введите оценки.\n");
+		gets_s((dataBase + index)->marks);
+		fflush(stdin);
+		int i = 0;
+		(dataBase + index)->countMarks = 0;
+		while ((dataBase + index)->marks[i] != '\0')
+		{
+			if ((dataBase + index)->marks[i] >= '0' && (dataBase + index)->marks[i] <= '9')
+				((dataBase + index)->countMarks)++;
+			i++;
+		}
+		break; 
+	}
+	default:
+		printf("Нет такой опции.\n");
+	}
+	printf("Новые данные сохранены.\n");
+}
+
+exam* getNewExam(exam* dataBase)//зaполнение новой записи
+{
+	exam* regular = dataBase;
+	regular->filled = true;
+	printf("Введите название экзамена.\n");
+	gets_s(regular->name);
+	printf("Введите фамилию преподавателя.\n");
+	gets_s(regular->teacherSername);
+	fflush(stdin);
+	printf("Введите дату экзамена в формате DD, нажмите Enter. Затем, введите месяц в виде MM, нажимите Enter. Введите год в формате YYYY.\n");
+	scanf_s("%d", &regular->dd);
+	scanf_s("%d", &regular->mm);
+	scanf_s("%d", &regular->yyyy);
+	printf("Введите оценки.\n");
+	gets_s(regular->marks);
+	fflush(stdin);
+	int i = 0;
+	regular->countMarks = 0;
+	while (regular->marks[i] != '\0')
+	{
+		if (regular->marks[i] >= '0' && regular->marks[i] <= '9')
+			(regular->countMarks)++;
+		i++;
+	}
+	return regular;
+}
+
+void filling(exam* dataBase, int n)//заполнение базы
+{
+	for (int i = 0; i < n; i++)
+	{
+		addNew(dataBase, i);
+	}
+}
+
+void addNew(exam* dataBase, int index)//добавление новой записи
+{
+	if (!(dataBase + index)->filled)
+	{
+		*(dataBase + index) = *getNewExam(dataBase + index);
+	}
+	else
+	{
+		printf("Здесь уже есть запись. Вот она:\n");
+		showOne(dataBase + index, (dataBase + index)->filled, index);
+		printf("Вы можете удалить или редактировать её\n");
+	}
+}
+
+void deleteOne(exam* dataBase, int index)//удаление одной записи
+{
+	if (!(dataBase + index)->filled)
+		showOne(dataBase + index, (dataBase + index)->filled, index);
+	else
+		(dataBase + index)->filled = false;
+}
+
+void clean(exam* dataBase, int n)//очистка
+{
+	for (int i = 0; i < n; i++)
+	{
+		(dataBase + i)->filled = false;
+	}
+}
+
+void showAll(exam* dataBase, int n)//показать всё
+{
+	int i = 0;
+	for (int j = 0; j < n; j++)
+	{
+		if (!(dataBase + j)->filled)
+			showOne(dataBase + j, (dataBase + j)->filled, j);
+		else
+		{
+			showOne(dataBase + j, (dataBase + j)->filled, j);
+			i++;
+		}
+	}
+	printf("Всего %d записей в базе.\nЕщё можно добавить %d записей.\n", i, n - i);
+}
+
+void showFilled(exam* dataBase, int n)//показать заполненные
+{
+	int i = 0;
+	for (int j = 0; j < n; j++)
+	{
+		if ((dataBase + j)->filled)
+		{
+			showOne(dataBase + j, (dataBase + j)->filled, j);
+			i++;
+		}
+	}
+	printf("Всего %d записей в базе.\nЕщё можно добавить %d записей.\n", i, n - i);
+}
+
+void research(exam* dataBase, int n)//поиск
+{
+	printf("Введите фамилию преподавателя, или название экзамена целиком либо частично"
+		", или месяц, за который хотите просмотреть список экзаменов, или номер записи "
+		"от 0 до %d. Месяц вводить в формате mm. Пожалуйста, при вводе фамилии либо слов "
+		"из названия используйте словесный аналог цифр, если они там есть, например: не '6', а 'шесть'.\n", n - 1);
+	char enterStr[40];
+	gets_s(enterStr);
+	fflush(stdin);
+	int cnt = 0, monthOrIndex = 0, j = 0;
+	bool noteFounded = false;
+	for (int i = 0; enterStr[i] != '\0'; i++)//ищем число - есть ли цифры во введенной строке
+		if (enterStr[i] >= 0 && enterStr[i] <= 9)
+			cnt++;
+	if (cnt != 0 && strlen(enterStr) == cnt)//если введено число и только оно
+		monthOrIndex = converting(enterStr);//преобразуем его в целочисленный тип
+	for (j = 0; j < n; j++)//сравниваем с параметрами в записях введенную строку
+	{
+		if(strlen(enterStr) != 0 )
+		{
+			if ((dataBase + j)->filled)//если запись заполнена
+				if ((dataBase + j)->mm == monthOrIndex || j == monthOrIndex || strstr((dataBase + j)->teacherSername, enterStr)
+					|| strstr((dataBase + j)->name, enterStr))//если 
+						//месяц совпадает с введенным значением или, если введённая строка найдена в строке "фамилия", или если введенная строка является 
+						//подстрокой названия, или, если индекс совпадает с введённым значением
+				{
+					noteFounded = true;//когда найдено совпадение
+					showOne(dataBase + j, noteFounded, j);//выводим
+				}
+		}
+		else
+		{
+			if (strlen((dataBase + j)->teacherSername) == strlen(enterStr) || strlen((dataBase + j)->name) == strlen(enterStr))
+			{
+				noteFounded = true;//когда найдено совпадение
+				showOne(dataBase + j, noteFounded, j);//выводим
+			}
+		}
+	}
+	if (!noteFounded)//не было найдено ни одного совпадения
+		showOne(dataBase + j, noteFounded, j);
+}
+
+void showOne(exam* dataBase, bool noteFounded, int index)//показать одну
+{
+	if (noteFounded)
+		printf("№%d %40s\t%15s\t%2d.%2d.%4d\t%5s\t%2d\n", index, dataBase->name,
+														dataBase->teacherSername,
+														dataBase->dd,
+														dataBase->mm,
+														dataBase->yyyy,
+														dataBase->marks,
+														dataBase->countMarks);
+	else
+		printf("Запись пуста/не найдена!\n");
+}
+
+void keyTable(exam *dataBase, int n)//таблица ключей
+{
+	printf("Это таблица ключей, где можно посмотреть, записи под каким номером пусты (0), а в каких содержатся данные (1):\n");
+	for (int i = 0; i < n; i++)
+	{
+		printf("№%d\t%d;\n", i, (dataBase + i)->filled);
+	}
+}
+
+void enterIndex(exam *dataBase, int n, int &index)//ввод индекса для добавления, редактирования, удаления записи или её демонстрации
+{
+	index = 0;
+	keyTable(dataBase, n);
+	printf("Введите номер записи\n");
+	scanf_s("%d", &index);
+	while (index >= n)
+	{
+		printf("Максимальное количество записей в этой базе - %d!\n Введите, пожалуйста, значение от 0 до %d включительно.\n", n, n - 1);
+		scanf_s("%d", &index);
+	}
+}
+
+bool compare(exam* a, exam* b, int cnt)//сравнение
+{
+	bool resultCompare = true;
+	while (cnt < 3)
+	{
+		if (a->dd == b->dd)
+		{
+			compare(a + 1, b + 1, cnt + 1);//как правильно??
+		}
+		else
+		{
+			if (a->dd < b->dd)
+			{
+				resultCompare = true;
+				break;
+			}
+			else 
+			{
+				resultCompare = false;
+				break;
+			}
+		}
+	}
+	return resultCompare;
+}
+void sortAllNotes(exam *dataBase, int a, int b)//сортировка по фамилии преподавателя и по дате
+{
+	if (b - a > 1)
+	{
+		int d = (a + b) / 2;
+		sortAllNotes(dataBase, a, d);
+		sortAllNotes(dataBase, d, b);
+
+		int i = 0, j = 0;
+		exam *B = (exam*)malloc((b - a) * sizeof(exam));
+		while (i < d - a && j < b - d)
+		{
+			if (memcmp((dataBase + a + i)->teacherSername, (dataBase + d + j)->teacherSername, 15) == 0)
+			{
+				if (compare((dataBase + a + i), (dataBase + d + j), 0))
+				{
+					*(B + i + j) = *(dataBase + a + i);
+					i++;
+				}
+				else
+				{
+					*(B + i + j) = *(dataBase + d + j);
+					j++;
+				}
+					
+			}
+			else
+			{
+				if (memcmp((dataBase + a + i)->teacherSername, (dataBase + d + j)->teacherSername, 15) < 0)
+				{
+
+					*(B + i + j) = *(dataBase + a + i);
+					i++;
+				}
+				else
+				{
+					*(B + i + j) = *(dataBase + d + j);
+					j++;
+				}
+			}
+		}
+		while (i < d - a)
+		{
+			*(B + i + j) = *(dataBase + a + i);
+			i++;
+		}
+		while (j < b - d)
+		{
+			*(B + i + j) = *(dataBase + d + j);
+			j++;
+		}
+		for (i = 0; i < b - a; i++)
+			*(dataBase + a + i) = *(B + i);
+		free(B);
+	}
+}
+
+void menues(int flag)
+{
+	switch (flag)
+	{
+	case 0:
+	{
+		printf("Меню программы"
+			"\n1 - Посмотреть меню ещё раз\n2 - Заполнить базу\n3 - Сортировать базу\n"
+			"4 - Добавить запись\n5 - Редактировать запись\n6 - Удалить запись\n"
+			"7 - Поиск записей\n8 - Посмотреть заполненные записи\n9 - Посмотреть все записи\n"
+			"10 - Очистить базу\n11 - Посмотреть таблицу ключей\n12 - Выйти из программы (база будет удалена)\n"
+			"Вводите значение, соответвующее действию, которое хотите совершить с базой данных.\n\n");
+		break;
+	}
+	case 1:
+	{
+		printf("Меню редактирования\nВы хотите изменить:\n1 - название предмета\n2 - фамилию преподавателя\n"
+			"3 - дату экзамена\n4 - оценки\nВведите нужное значение далее:\n");
+	}
+	}
+}
+
+int converting(char string[])
+{
+	int sub = 0, result = 0;
+	for (int i = 0; string[i] != '\0'; i++)//преобразуем в int
+	{
+			sub = string[i] - '0';
+			if (string[i + 1] != '\0')
+				sub *= 10;
+			result += sub;
+	}
+	return result;
+}
+
+void main()
+{
+	setlocale(LC_ALL, "RUS");
+	int n = 2;
+	exam* dataBase = (exam*)malloc(n*sizeof(exam));
+	menues(0);
+	for (bool cicle = false; cicle != !cicle; )
+	{
+		int option = 0;
+		printf("Введите, что вы хотите сделать:\n");
+		scanf_s("%d", &option);
+		switch(option)
+		{
+		case 1:
+		{
+			menues(0);
+			break;
+		}
+		case 2:
+		{
+			filling(dataBase, n);
+			break;
+		}
+		case 3:
+		{
+			int a = 0, b = n;
+			sortAllNotes(dataBase, a, b);
+			break;
+		}
+		case 4:
+		{
+			int index = 0;
+			enterIndex(dataBase, n, index);
+			addNew(dataBase, index);
+			break;
+		}
+		case 5:
+		{
+			int index = 0;
+			enterIndex(dataBase, n, index);
+			editing(dataBase, index);
+			break;
+		}
+		case 6:
+		{
+			int index = 0;
+			enterIndex(dataBase, n, index);
+			deleteOne(dataBase, index);
+			break;
+		}
+		case 7:
+		{
+			research(dataBase, n);
+			break;
+		}
+		case 8:
+		{
+			showFilled(dataBase, n);
+			break;
+		}
+		case 9:
+		{
+			showAll(dataBase, n);
+			break;
+		}
+		case 10:
+		{
+			int answer = 0;
+			printf("Вы уверены, что хотите очистить всё? Введите значение: 1 - да, 0 - нет.\n");
+			scanf_s("%d", &answer);
+			switch (answer)
+			{
+			case 0:
+				break;
+			case 1:
+			{
+				clean(dataBase, n);
+				printf("База очищена. Изменения сохранены.\n");
+				break;
+			}
+			default:
+			{
+				printf("Нет такой опции.\n");
+			}
+			}
+			break;
+		}
+		case 11:
+		{
+			keyTable(dataBase, n);
+			break;
+		}
+		case 12:
+		{
+			free(dataBase);
+			exit(EXIT_SUCCESS);
+		}
+		default:
+			printf("Нет такой опции.\n");
+		}
+	}
+}
