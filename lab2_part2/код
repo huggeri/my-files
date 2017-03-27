@@ -381,7 +381,7 @@ void main()
 	menues(0);
 	for (bool cicle = false; cicle != !cicle; )
 	{
-		int option = 0;
+		int option = 0, index = 0;
 		printf("Введите, что вы хотите сделать:\n");
 		scanf_s("%d", &option);
 		switch(option)
@@ -404,21 +404,18 @@ void main()
 		}
 		case 4:
 		{
-			int index = 0;
 			enterIndex(dataBase, n, index);
 			addNew(dataBase, index);
 			break;
 		}
 		case 5:
 		{
-			int index = 0;
 			enterIndex(dataBase, n, index);
 			editing(dataBase, index);
 			break;
 		}
 		case 6:
 		{
-			int index = 0;
 			enterIndex(dataBase, n, index);
 			deleteOne(dataBase, index);
 			break;
