@@ -11,19 +11,19 @@ double sum(int first, double second, ...)
 {
 	int *size = &first;
 	double *value = &second;
-	double S = 0;
+	double s = 0;
 	while (*size != 0)
 	{
-		S += *size;
+		s += *size;
 		for (*size; *size != 0; (*size)--)
 		{
-			S += *value;
+			s += *value;
 			value++;
 		}
 		size = (int*)value;
 		value++;
 	}
-	return S;
+	return s;
 }
 
 void main() 
