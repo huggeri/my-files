@@ -49,5 +49,5 @@ void main()
 		putchar(*(memArea+i));
 	printf("\n");
 	free(memArea);
-  system("pause");
+ 	system("pause");
 }
