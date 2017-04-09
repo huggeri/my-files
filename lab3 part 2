@@ -46,9 +46,7 @@ void main()
 	n += inputStrings(memArea, n);// чтобы не выводилось свободного хвоста, 
 	// недостаточного для записи след. строки
 	for (int i = 0; i < n; i++)
-	{
 		putchar(*(memArea+i));
-	}
 	printf("\n");
 	free(memArea);
   system("pause");
