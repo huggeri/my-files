@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
+
+int inputStrings(char* memArea, int n)//функция заполнения массива
+{
+	char* sub = memArea; // указатель на начало массива - строка адресов
+	int attributes = sizeof(char) + sizeof(char*); // размер атрибутов
+	char* nextString = sub + attributes; // отступаем место для % и указателя, указыаем на новый адрес
+	// место для атрибутов
+	int N = 0;
+	int freeSizeCur = n - attributes;
+	while (freeSizeCur >= 1)  // смотрим, сколько ещё есть свободного места после того, как оставили 
+	{
+		*sub = '%'; // пишем знак, после которого должен быть адрес
+		sub++; // сдвигаем указаель
+		char** pointer = (char**)sub; // преобразовываем тип указателя для записи в строку адреса
+		*pointer = nextString; // записали в массив адрес будущей строки
+		printf("Enter string with length not more than %d symbols:\n", freeSizeCur - 1);
+		gets_s(nextString, freeSizeCur);
+		N += attributes + strlen(nextString) + sizeof(char); // размер всех элементов в строке, 
+		// накапливается
+		freeSizeCur = n - N - attributes; // вычитаем занятое место + место для адреса будущей строки
+		if (freeSizeCur >= 1) // сколько места осталось, если хватает на след строку и
+			//её адрес - перемещаем указатели для след. итерации цикла
+		{
+			sub += strlen(nextString) + attributes; // двигаем указатель для след. атрибутов
+			for (nextString; *nextString != '\0'; nextString++);
+			*nextString = ' '; // ставим вконце введённой строки пробел вместо символа конца строки
+			// для удобства
+			nextString = sub + attributes; // двигаем указатель для след строки
+		}
+	}
+	if (freeSizeCur < 1 && freeSizeCur > -attributes) // проверяем, остался ли "хвост"
+		N = (attributes + freeSizeCur) * (-1);
+	else
+		N = 0;
+	return N;
+}
+
+void main()
+{
+	int n = 30; // Исходная размерность кучи
+	char *memArea = (char*)malloc(n * sizeof(char));
+	n += inputStrings(memArea, n);// чтобы не выводилось свободного хвоста, 
+	// недостаточного для записи след. строки
+	for (int i = 0; i < n; i++)
+	{
+		putchar(*(memArea+i));
+	}
+	printf("\n");
+	free(memArea);
+  system("pause");
+}
