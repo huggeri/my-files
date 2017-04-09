@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-double sum(int first, double second...)
+double sum(int first, double second, ...)
 {
 	int *size = &first;
 	double *value = &second;
