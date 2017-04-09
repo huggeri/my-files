@@ -32,7 +32,7 @@ int inputStrings(char* memArea, int n)//функция заполнения ма
 			nextString = sub + attributes; // двигаем указатель для след строки
 		}
 	}
-	if (freeSizeCur < 1 && freeSizeCur > -attributes) // проверяем, остался ли "хвост"
+	if (freeSizeCur < 0 && freeSizeCur > -attributes) // проверяем, остался ли "хвост"
 		N = (attributes + freeSizeCur) * (-1);
 	else
 		N = 0;
